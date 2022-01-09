@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WordleRow extends StatelessWidget {
@@ -16,14 +17,26 @@ class WordleRow extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> boxes = [];
     for (int i = 0; i < wordLength; i++) {
+      String text = (answer.length > i) ? answer[i] : "  ";
+      Color bgColor =
+          (answer.length > i) ? Colors.grey : Colors.white;
       boxes.add(Container(
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.all(2),
-        decoration:
-            BoxDecoration(border: Border.all(color: Colors.black, width: 2.0)),
-        child: const Text(
-          "A",
-          style: TextStyle(fontSize: 22.0, color: Colors.black, shadows: null),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 2.0),
+            color: bgColor),
+        child: SizedBox(
+          width: 18,
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 22.0,
+              color: Colors.white,
+              shadows: null,
+            ),
+          ),
         ),
       ));
     }
