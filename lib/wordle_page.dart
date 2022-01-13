@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordle_mobile/word_data_provider.dart';
 import 'package:wordle_mobile/wordle_row.dart';
 
-class WordlePage extends StatefulWidget {
+class WordlePage extends ConsumerStatefulWidget {
   WordlePage({Key? key}) : super(key: key);
 
   TextEditingController answerController =
@@ -11,7 +13,8 @@ class WordlePage extends StatefulWidget {
   _WordlePageState createState() => _WordlePageState();
 }
 
-class _WordlePageState extends State<WordlePage> {
+class _WordlePageState extends ConsumerState<WordlePage> {
+
   int _wordSize = 5;
   int _attempts = 6;
   int _nextAttempt = 0;
@@ -34,11 +37,17 @@ class _WordlePageState extends State<WordlePage> {
     setState(() {
       _attemptedAnswers[_nextAttempt] = widget.answerController.value.text;
       _nextAttempt++;
+      widget.answerController.clear();
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    final wordData = ref.watch(wordDataProvider);
+    final wordDataNotifier = ref.watch(wordDataProvider.notifier);
+
     List<Widget> rows = [];
     for (int i = 0; i < _attempts; i++) {
       rows.add(WordleRow(

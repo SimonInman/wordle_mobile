@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WordleRow extends StatelessWidget {
@@ -13,19 +12,26 @@ class WordleRow extends StatelessWidget {
       required this.correct})
       : super(key: key);
 
+  Color getBgColor(int i) {
+    if (answer.length <= i) return Colors.white;
+    if (correct[i] == answer[i]) return Colors.green;
+    if (correct.contains(answer[i])) return Colors.orangeAccent;
+    return Colors.grey;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> boxes = [];
     for (int i = 0; i < wordLength; i++) {
       String text = (answer.length > i) ? answer[i] : "  ";
-      Color bgColor =
-          (answer.length > i) ? Colors.grey : Colors.white;
+
       boxes.add(Container(
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 2.0),
-            color: bgColor),
+            border: Border.all(color: Colors.grey, width: 2.0),
+            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+            color: getBgColor(i)),
         child: SizedBox(
           width: 18,
           child: Text(
