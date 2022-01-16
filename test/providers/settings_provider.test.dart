@@ -9,6 +9,7 @@ StateNotifierProvider<GameSettingsNotifier, GameSettings>(
 
 void main () {
   test('game settings can be updated', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
 
     final container = ProviderContainer();
     addTearDown(container.dispose);
@@ -27,6 +28,7 @@ void main () {
   });
 
   test('game settings default values', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
     final container = ProviderContainer();
     addTearDown(container.dispose);
 
