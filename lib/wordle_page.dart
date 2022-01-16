@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordle_mobile/widgets/wordle_row.dart';
 import 'package:wordle_mobile/word_data_provider.dart';
-import 'package:wordle_mobile/wordle_row.dart';
 
 class WordlePage extends ConsumerStatefulWidget {
   WordlePage({Key? key}) : super(key: key);

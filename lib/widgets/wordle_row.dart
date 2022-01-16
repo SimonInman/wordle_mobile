@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class WordleRow extends StatelessWidget {
   final int wordLength;
@@ -18,6 +19,10 @@ class WordleRow extends StatelessWidget {
     if (correct.contains(answer[i])) return Colors.orangeAccent;
     return Colors.grey;
   }
+  BoxBorder? getBorder(int i) {
+    if (answer.length <= i) return Border.all(color: Colors.grey, width: 2.0);
+    return Border.all(color: Colors.transparent, width: 2.0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class WordleRow extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 2.0),
+            border: getBorder(i),
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
             color: getBgColor(i)),
         child: SizedBox(
