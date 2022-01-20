@@ -15,10 +15,11 @@ class WordleGrid extends ConsumerWidget {
     List<Widget> rows = [];
     for (int i = 0; i < gameState.settings.attemptsAllowed; i++) {
       String answer = "";
-      if (i < gameState.attempts.length) {
+      if (gameState.attempts.length > i) {
         answer = gameState.attempts[i];
       }
       rows.add(WordleRow(
+          attempted: gameState.attemptedUpto > i,
           wordLength: gameState.settings.wordSize,
           answer: answer,
           correct: gameState.correctWord));

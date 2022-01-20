@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 
 class WordleRow extends StatelessWidget {
+  final bool attempted;
   final int wordLength;
   final String answer;
   final String correct;
 
   const WordleRow(
       {Key? key,
+      required this.attempted,
       required this.wordLength,
       required this.answer,
       required this.correct})
       : super(key: key);
 
   Color getBgColor(int i) {
-    if (answer.length <= i) return Colors.white;
+    if (!attempted) return Colors.white;
     if (correct[i] == answer[i]) return Colors.green;
     if (correct.contains(answer[i])) return Colors.orangeAccent;
     return Colors.grey;
   }
 
-  BoxBorder? getBorder(int i) {
-    if (answer.length <= i) return Border.all(color: Colors.grey, width: 2.0);
+  BoxBorder? getBorder() {
+    if (!attempted) return Border.all(color: Colors.grey, width: 2.0);
     return Border.all(color: Colors.transparent, width: 2.0);
   }
 
@@ -34,7 +36,7 @@ class WordleRow extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.all(2),
         decoration: BoxDecoration(
-            border: getBorder(i),
+            border: getBorder(),
             borderRadius: const BorderRadius.all(Radius.circular(4.0)),
             color: getBgColor(i)),
         child: SizedBox(
@@ -42,9 +44,9 @@ class WordleRow extends StatelessWidget {
           child: Text(
             text,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 22.0,
-              color: Colors.white,
+              color: attempted ? Colors.white : Colors.grey,
               shadows: null,
             ),
           ),
@@ -52,11 +54,9 @@ class WordleRow extends StatelessWidget {
       ));
     }
 
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: boxes,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: boxes,
     );
   }
 }
