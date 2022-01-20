@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class WordleRow extends StatelessWidget {
   final int wordLength;
@@ -19,6 +18,7 @@ class WordleRow extends StatelessWidget {
     if (correct.contains(answer[i])) return Colors.orangeAccent;
     return Colors.grey;
   }
+
   BoxBorder? getBorder(int i) {
     if (answer.length <= i) return Border.all(color: Colors.grey, width: 2.0);
     return Border.all(color: Colors.transparent, width: 2.0);

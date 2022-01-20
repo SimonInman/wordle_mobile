@@ -56,7 +56,6 @@ class GameStateNotifier extends StateNotifier<GameState> {
     final words = (state.correctWord.length == state.settings.wordSize)
         ? state.words
         : await loadWords(state.settings.wordSize);
-
     state = GameState.update(state,
         attempts: List.empty(),
         words: words,
