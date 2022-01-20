@@ -22,14 +22,29 @@ class GameState {
   final GameSettings settings;
   final GameStatus gameStatus;
   final String correctWord;
+  late final List<String> words;
   late final List<String> attempts;
 
   GameState(this.settings,
       {this.correctWord = "begin",
       this.gameStatus = GameStatus.loading,
+      List<String>? words,
       List<String>? attempts}) {
     this.attempts = attempts ?? List.empty();
+    this.words = words ?? List.empty();
   }
+
+  GameState.update(GameState old,
+      {GameSettings? settings,
+      GameStatus? gameStatus,
+      String? correctWord,
+      List<String>? words,
+      List<String>? attempts})
+      : this(settings ?? old.settings,
+            correctWord: correctWord ?? old.correctWord,
+            gameStatus: gameStatus ?? old.gameStatus,
+            words: words ?? old.words,
+            attempts: attempts ?? old.attempts);
 }
 
 class GameStateNotifier extends StateNotifier<GameState> {
@@ -38,9 +53,13 @@ class GameStateNotifier extends StateNotifier<GameState> {
   GameStateNotifier(GameSettings settings) : super(GameState(settings));
 
   Future<void> resetWord() async {
-    final words = await loadWords(state.settings.wordSize);
-    state = GameState(state.settings,
+    final words = (state.correctWord.length == state.settings.wordSize)
+        ? state.words
+        : await loadWords(state.settings.wordSize);
+
+    state = GameState.update(state,
         attempts: List.empty(),
+        words: words,
         correctWord: words[rng.nextInt(words.length)],
         gameStatus: GameStatus.started);
   }
@@ -52,10 +71,7 @@ class GameStateNotifier extends StateNotifier<GameState> {
     if (answer.length != state.correctWord.length) {
       throw WrongWordLengthException(state.correctWord.length);
     }
-    state = GameState(state.settings,
-        gameStatus: state.gameStatus,
-        correctWord: state.correctWord,
-        attempts: [...state.attempts, answer]);
+    state = GameState.update(state, attempts: [...state.attempts, answer]);
   }
 }
 

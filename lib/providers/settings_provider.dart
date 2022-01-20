@@ -5,20 +5,25 @@ class GameSettings {
   final int attemptsAllowed;
 
   GameSettings({this.wordSize = 5, this.attemptsAllowed = 6});
+
+  GameSettings.update(GameSettings old, {int? wordSize, int? attemptsAllowed})
+      : this(
+            wordSize: wordSize ?? old.wordSize,
+            attemptsAllowed: attemptsAllowed ?? old.attemptsAllowed);
 }
 
 class GameSettingsNotifier extends StateNotifier<GameSettings> {
   GameSettingsNotifier() : super(GameSettings());
 
   void updateWordSize(int newWordSize) {
-    state = GameSettings(wordSize: newWordSize, attemptsAllowed: state.attemptsAllowed);
+    state = GameSettings.update(state, wordSize: newWordSize);
   }
 
   void updateAttemptsAllowed(int newAttemptsAllowed) {
-    state = GameSettings(wordSize: state.wordSize, attemptsAllowed: newAttemptsAllowed);
+    state = GameSettings.update(state, attemptsAllowed: newAttemptsAllowed);
   }
 }
 
 final gameSettingsProvider =
-StateNotifierProvider<GameSettingsNotifier, GameSettings>(
+    StateNotifierProvider<GameSettingsNotifier, GameSettings>(
         (ref) => GameSettingsNotifier());
