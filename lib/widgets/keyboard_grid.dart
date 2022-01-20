@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wordle_mobile/widgets/keyboard_key.dart';
+import 'package:wordle_mobile/widgets/keyboard_key_del.dart';
+import 'package:wordle_mobile/widgets/keyboard_key_enter.dart';
 
 const ROW_1 = "QWERTYUIOP";
 const ROW_2 = "ASDFGHJKL";
@@ -44,6 +46,7 @@ class KeyboardGrid extends ConsumerWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: const [
+            KeyboardKeyEnter(),
             KeyboardKey("Z"),
             KeyboardKey("X"),
             KeyboardKey("C"),
@@ -51,6 +54,7 @@ class KeyboardGrid extends ConsumerWidget {
             KeyboardKey("B"),
             KeyboardKey("N"),
             KeyboardKey("M"),
+            KeyboardKeyDel(),
           ],
         ),
       ],

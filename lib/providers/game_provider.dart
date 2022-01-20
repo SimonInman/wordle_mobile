@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wordle_mobile/data/wordlist_repo.dart';
 import 'package:wordle_mobile/providers/settings_provider.dart';
@@ -74,13 +73,24 @@ class GameStateNotifier extends StateNotifier<GameState> {
       attempts.add("");
     }
     // if the word has been done
-    if (attempts[state.attemptedUpto].length >= state.correctWord.length) {
-      // TODO: check enter button
-      attemptAnswer(attempts[state.attemptedUpto]);
+    if (character == "ENTER") {
+      if (attempts[state.attemptedUpto].length != state.correctWord.length) {
+        // toast to complete word maybe?
+      } else {
+        attemptAnswer(attempts[state.attemptedUpto]);
+      }
+      return;
+    } else if (character == "DEL") {
+      int splitTo = attempts[state.attemptedUpto].length - 1;
+      if (splitTo < 0) {
+        splitTo = 0;
+      }
+      attempts[state.attemptedUpto] =
+          attempts[state.attemptedUpto].substring(0, splitTo);
     } else {
       attempts[state.attemptedUpto] += character;
-      state = GameState.update(state, attempts: attempts);
     }
+    state = GameState.update(state, attempts: attempts);
   }
 
   void attemptAnswer(String answer) {

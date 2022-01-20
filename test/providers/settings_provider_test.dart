@@ -1,11 +1,12 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:wordle_mobile/providers/settings_provider.dart';
 
-final gameSettingsProvider =
-StateNotifierProvider<GameSettingsNotifier, GameSettings>(
-        (ref) => GameSettingsNotifier());
+class GameSettingsListener extends Mock {
+  void call(GameSettings? previous, GameSettings next);
+}
 
 void main () {
   test('game settings can be updated', () {
@@ -13,10 +14,11 @@ void main () {
 
     final container = ProviderContainer();
     addTearDown(container.dispose);
+    final gameSettingsListener = GameSettingsListener();
 
-    container.listen(gameSettingsProvider, (GameSettings? previous, GameSettings next) {
+    container.listen(gameSettingsProvider, gameSettingsListener, fireImmediately: true);
 
-    }, fireImmediately: true);
+    verify(gameSettingsListener(null, container.read(gameSettingsProvider))).called(1);
 
     container.read(gameSettingsProvider.notifier).updateWordSize(6);
     expect(container.read(gameSettingsProvider).wordSize, 6);
