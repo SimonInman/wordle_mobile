@@ -80,6 +80,8 @@ class GameStateNotifier extends StateNotifier<GameState> {
         attemptAnswer(attempts[state.attemptedUpto]);
       }
       return;
+
+
     } else if (character == "DEL") {
       int splitTo = attempts[state.attemptedUpto].length - 1;
       if (splitTo < 0) {
@@ -87,8 +89,14 @@ class GameStateNotifier extends StateNotifier<GameState> {
       }
       attempts[state.attemptedUpto] =
           attempts[state.attemptedUpto].substring(0, splitTo);
+
+
     } else {
-      attempts[state.attemptedUpto] += character;
+      if (attempts[state.attemptedUpto].length >= state.correctWord.length) {
+        // toast that no more letters possible maybe?
+      } else {
+        attempts[state.attemptedUpto] += character;
+      }
     }
     state = GameState.update(state, attempts: attempts);
   }
