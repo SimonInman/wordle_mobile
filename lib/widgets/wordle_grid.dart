@@ -15,10 +15,13 @@ class WordleGrid extends ConsumerWidget {
     ? false 
     : gameState.attempts[gameState.attemptedUpto - 1] == gameState.correctWord;
     if (isWinner) {
-      return Stack(children: [
+      return Stack(
+        alignment:  Alignment.center,
+        children: [
         _build(context, ref),
         _winMessage(context, ref)
-      ]);
+      ]
+      );
     } 
     return _build(context, ref);
   }
@@ -48,13 +51,17 @@ class WordleGrid extends ConsumerWidget {
     //todo pass game state
     final gameState = ref.watch(gameStateProvider);
     return SizedBox(height: 200.0, width: 400.0, child: Container(color: Colors.blueAccent, 
-    child: Column(children: [
-      const Text('You Won!'),
-      WordleRow(attempted: true, 
-      wordLength: gameState.settings.wordSize, 
-      answer: gameState.correctWord, correct: gameState.correctWord,)
-
-    ],),)
-   ,);
+    child: Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+        const Text('You Won!', style: TextStyle( fontSize: 50.0)),
+        WordleRow(attempted: true,
+          wordLength: gameState.settings.wordSize,
+          answer: gameState.correctWord, 
+          correct: gameState.correctWord)
+      ]),
+    ))
+   );
   }
 }

@@ -31,8 +31,10 @@ class MyApp extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [AnswerBox(), const WordleGrid(), KeyboardGrid()],
+        children: [AnswerBox(), _helpText(), const WordleGrid(), KeyboardGrid()],
       )),
     );
   }
+
+  Text _helpText() => Text('Like normal Wordle, but one letter per attempt is lying to you...');
 }
