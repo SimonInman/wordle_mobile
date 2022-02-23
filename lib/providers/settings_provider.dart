@@ -4,7 +4,7 @@ class GameSettings {
   final int wordSize;
   final int attemptsAllowed;
 
-  GameSettings({this.wordSize = 5, this.attemptsAllowed = 6});
+  GameSettings({this.wordSize = 5, this.attemptsAllowed = 10});
 
   GameSettings.update(GameSettings old, {int? wordSize, int? attemptsAllowed})
       : this(
