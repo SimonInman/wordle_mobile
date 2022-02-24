@@ -48,6 +48,8 @@ class WordleRow extends StatelessWidget {
     return Border.all(color: Colors.transparent, width: 2.0);
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     List<Widget> boxes = [];

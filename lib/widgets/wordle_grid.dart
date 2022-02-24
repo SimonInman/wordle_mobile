@@ -11,20 +11,41 @@ class WordleGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final gameState = ref.watch(gameStateProvider);
-    final bool isWinner = gameState.attemptedUpto == 0 
-    ? false 
-    : gameState.attempts[gameState.attemptedUpto - 1] == gameState.correctWord;
+
+    final isWinner = isWinningGame(gameState);
     if (isWinner) {
       return Stack(
         alignment:  Alignment.center,
         children: [
         _build(context, ref),
-        _winMessage(context, ref)
-      ]
-      );
+        _winMessage(context, gameState)
+      ]);
     } 
+  
+    if (isLosingGame(gameState)) {
+      return Stack(
+        alignment:  Alignment.center,
+        children: [
+        _build(context, ref),
+        _loseMessage(context, gameState)
+      ]);
+    }
+
     return _build(context, ref);
   }
+
+  bool isWinningGame(GameState gameState) {
+    return gameState.attemptedUpto == 0 
+    ? false 
+    : gameState.attempts[gameState.attemptedUpto - 1] == gameState.correctWord;
+  }
+
+  bool isLosingGame(GameState gameState) {
+    return gameState.attemptedUpto == 0 
+    ? false 
+    : gameState.attemptedUpto == gameState.settings.attemptsAllowed;
+  }
+
 
   Widget _build(BuildContext context, WidgetRef ref) {
     final gameState = ref.watch(gameStateProvider);
@@ -47,21 +68,27 @@ class WordleGrid extends ConsumerWidget {
     );
   }
 
-  _winMessage(BuildContext context, WidgetRef ref) { 
-    //todo pass game state
-    final gameState = ref.watch(gameStateProvider);
+  _winMessage(BuildContext context, GameState gameState) { 
+    return _endOfGameMessage(gameState, 'You Won!');
+  }
+
+  _loseMessage(BuildContext context, GameState gameState) { 
+    return _endOfGameMessage(gameState, 'You Lose!');
+  }
+
+  SizedBox _endOfGameMessage(GameState gameState, String userMessage) {
     return SizedBox(height: 200.0, width: 400.0, child: Container(color: Colors.blueAccent, 
-    child: Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-        const Text('You Won!', style: TextStyle( fontSize: 50.0)),
-        WordleRow(attempted: true,
-          wordLength: gameState.settings.wordSize,
-          answer: gameState.correctWord, 
-          correct: gameState.correctWord)
-      ]),
-    ))
-   );
+  child: Center(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+      Text(userMessage, style: TextStyle( fontSize: 50.0)),
+      WordleRow(attempted: true,
+        wordLength: gameState.settings.wordSize,
+        answer: gameState.correctWord, 
+        correct: gameState.correctWord)
+    ]),
+  ))
+ );
   }
 }
