@@ -36,5 +36,5 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Text _helpText() => Text('Like normal Wordle, but one letter per attempt is lying to you...');
+  Text _helpText() => Text('Like normal Wordle, but one box per attempt is lying to you...');
 }
