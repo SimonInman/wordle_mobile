@@ -50,8 +50,6 @@ class GameState {
 }
 
 class GameStateNotifier extends StateNotifier<GameState> {
-  Random rng = Random();
-
   GameStateNotifier(GameSettings settings) : super(GameState(settings));
 
   Future<void> resetWord() async {
@@ -62,9 +60,18 @@ class GameStateNotifier extends StateNotifier<GameState> {
     state = GameState.update(state,
         attempts: List.empty(),
         words: words,
-        correctWord: words[rng.nextInt(words.length)],
+        correctWord: _wordOfTheDay(words),
         gameStatus: GameStatus.started);
   }
+
+/// Provides a psuedorandom but deterministic word based on the date of the local time.
+String _wordOfTheDay(List<String> deterministicallyShuffledWords) {
+  final nowLocalTime = DateTime.now();
+  final fixedTimeLocalTime = DateTime(2001);
+
+  final index = daysBetween(fixedTimeLocalTime, nowLocalTime) % deterministicallyShuffledWords.length;
+  return deterministicallyShuffledWords[index];
+}
 
   void updateCurrentAttempt(String character) {
     List<String> attempts = List.from(state.attempts, growable: true);
@@ -116,3 +123,9 @@ final gameStateProvider =
   notifier.resetWord();
   return notifier;
 });
+
+int daysBetween(DateTime from, DateTime to) {
+  from = DateTime(from.year, from.month, from.day);
+  to = DateTime(to.year, to.month, to.day);
+  return (to.difference(from).inHours / 24).round();
+}
